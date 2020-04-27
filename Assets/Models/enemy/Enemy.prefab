@@ -98,6 +98,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rotationSpeed: 10
+  shootSpeed: 5
+  bullet: {fileID: 6237417192369016692, guid: 72072f9018552b4408a326d1cb1d4fb1, type: 3}
+  firePoint: {fileID: 2184687994523156560}
 --- !u!1 &234829625484714437
 GameObject:
   m_ObjectHideFlags: 0
