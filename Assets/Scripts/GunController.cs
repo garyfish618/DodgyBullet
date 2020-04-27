@@ -19,7 +19,7 @@ public class GunController : MonoBehaviour
             muzzleFlash.Play();
             RaycastHit hitInfo;
             if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, range)) {
-                Debug.Log(hitInfo.transform.name);
+                
             }
         }
 
