@@ -7,8 +7,11 @@ public class UIController : MonoBehaviour
 {
     [SerializeField]
     private Text ammo = null;
+    
+    [SerializeField]
     private GameObject gameOver = null;
     
+    [SerializeField]
     public PersistenceController pc;
 
     // Start is called before the first frame update

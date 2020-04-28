@@ -6,12 +6,11 @@ public class BulletController : MonoBehaviour
 {
     public float speed = 30f;
     public Rigidbody rb;
-
-    [SerializeField]
-    public UIController ui = null;
+    private UIController ui = null;
 
     void Start() {
         transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, 0);
+        ui = GameObject.Find("UIController").GetComponent<UIController>();
     }
     // Update is called once per frame
     void Update()

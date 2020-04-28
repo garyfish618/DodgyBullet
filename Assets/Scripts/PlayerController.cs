@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float sensitivity = 3.5f;
 
+    [SerializeField]
+    private PersistenceController pc;
+
     void Start()
     {
         Cursor.visible = false;
@@ -23,6 +26,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(pc.isDead) {
+            return;
+        }
          //Get movement vector
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
@@ -44,6 +50,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(pc.isDead) {
+            return;
+        }
        
         if(velocity != Vector3.zero){
             //Stops rigidbody from moving if it collides
