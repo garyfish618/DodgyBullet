@@ -37,9 +37,7 @@ public class EnemyController : MonoBehaviour
 
                StartCoroutine("ShootLaser");
             }          
-        }
-
-        
+        }       
     }
 
     IEnumerator ShootLaser()
@@ -50,7 +48,7 @@ public class EnemyController : MonoBehaviour
             yield break;
         }
         
-        Instantiate(bullet,firePoint.position, firePoint.rotation);
+        Instantiate(bullet, firePoint.position, firePoint.rotation);
 
         isShooting = true;
         yield return new WaitForSeconds(shootSpeed);

@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        // From   325 to 
  
 
     }

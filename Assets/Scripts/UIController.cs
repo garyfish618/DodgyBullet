@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
 {
     [SerializeField]
     private Text ammo = null;
+    private GameObject gameOver = null;
     
     public PersistenceController pc;
 
@@ -24,5 +25,15 @@ public class UIController : MonoBehaviour
 
     public void UpdateUI() {
         ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
+    }
+
+
+    public void KillPlayer() {
+        pc.isDead = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        gameOver.SetActive(true);
+
+
     }
 }

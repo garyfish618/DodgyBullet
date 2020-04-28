@@ -11,10 +11,13 @@ public class PersistenceController : MonoBehaviour
     public int ammoLeft;
     public int ammoInClip;
 
+    public bool isDead;
+
     private void Awake()
     {
         if (Instance == null)
         {
+            isDead = false;
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
 
