@@ -23,6 +23,10 @@ public class BulletController : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision col) {
+        if(col.gameObject.tag == "Bullet") {
+            Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
+        }
+
         if (col.gameObject.tag == "Player") {
             Destroy(gameObject);
             ui.KillPlayer();

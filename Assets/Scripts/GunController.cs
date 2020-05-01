@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GunController : MonoBehaviour
 {
-    public float damage = 10f;
+    public int damage = 2;
     public float range = 100f;
     public float fireRate = 15f;
     public float nextFire = 0f;
@@ -14,21 +14,31 @@ public class GunController : MonoBehaviour
     public ParticleSystem muzzleFlash;
     private PersistenceController pc;
     private UIController ui;
-
     private Animator anim;
 
+    private AudioSource shootingSound;
+
+    private AudioSource reloadSound;
+
+    private bool reloading = false;
 
     void Start()
     {
         anim = transform.GetComponent<Animator>();
-        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();
+        pc = PersistenceController.Instance;
         ui = GameObject.Find("UIController").GetComponent<UIController>();
-
+        shootingSound = GetComponents<AudioSource>()[0];
+        reloadSound = GetComponents<AudioSource>()[1];
     }
 
     // Update is called once per frame
     void Update()
     {
+        //If in main menu, do nothing
+        if(!pc.inGame) {
+            return;
+        }
+
         if(Input.GetKeyDown("r") && pc.ammoLeft != 0){
             StartCoroutine("Reload");
         }
@@ -36,6 +46,7 @@ public class GunController : MonoBehaviour
         //Fire weapon
         if(Input.GetMouseButton(0) && Time.time >= nextFire && !anim.GetCurrentAnimatorStateInfo(0).IsName("WeaponReload") && pc.ammoInClip != 0)
         {
+            shootingSound.Play();
             nextFire = Time.time + 1f/fireRate;
             pc.ammoInClip -= 1;
             ui.UpdateUI();
@@ -43,6 +54,11 @@ public class GunController : MonoBehaviour
             muzzleFlash.Play();
             RaycastHit hitInfo;
             if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, range)) {
+                UnityEngine.Debug.Log(hitInfo.collider.gameObject.tag);
+                if(hitInfo.collider.gameObject.tag == "Enemy") {
+                    UnityEngine.Debug.Log("Hit");
+                    hitInfo.collider.gameObject.GetComponent<EnemyController>().TakeDamage(damage);
+                }
                 
             }
         }
@@ -62,10 +78,11 @@ public class GunController : MonoBehaviour
 
     private IEnumerator Reload() {
         //Return if ammo is full or reload already going 
-        if(anim.GetCurrentAnimatorStateInfo(0).IsName("WeaponReload") || pc.ammoInClip == ammoPerClip) {
+        if(reloading || pc.ammoInClip == ammoPerClip) {
             yield break;
         }
-
+        reloading = true;
+        reloadSound.Play();
         anim.SetTrigger("Reload");
         yield return new WaitForSeconds(2.5f);
 
@@ -82,6 +99,7 @@ public class GunController : MonoBehaviour
         }
 
         ui.UpdateUI();
+        reloading = false;
                
     }
 

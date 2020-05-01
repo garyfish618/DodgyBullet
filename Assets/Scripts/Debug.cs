@@ -11,18 +11,22 @@ public class Debug : MonoBehaviour
      public Text fpsText;
      private float deltaTime;
      public bool isDebug;
+
+     private PersistenceController pc;
  
     void Start () {
+        pc = PersistenceController.Instance;
 
         if(isDebug) {
             fpsText.gameObject.SetActive(true);
         }
+
         
 
     }
 
      void Update () {
-         if(isDebug) {
+         if(isDebug && fpsText != null) {
              
             deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
             float fps = 1.0f / deltaTime;

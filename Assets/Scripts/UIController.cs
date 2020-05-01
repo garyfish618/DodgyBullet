@@ -1,37 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField]
-    private Text ammo = null;
+    public Text ammo;
+    public GameObject gameOver;
     
-    [SerializeField]
-    private GameObject gameOver = null;
-    
-    [SerializeField]
-    public PersistenceController pc;
+    private PersistenceController pc;
 
     // Start is called before the first frame update
     void Start()
     {
-        UpdateUI();
+        pc = PersistenceController.Instance;
+        ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-    
     }
 
     public void UpdateUI() {
+        if(ammo == null)
+        {
+            ammo = GameObject.Find("Canvas/Ammo").GetComponent<Text>();
+        }
+
         ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
     }
 
 
     public void KillPlayer() {
+
         pc.isDead = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -48,7 +50,7 @@ public class UIController : MonoBehaviour
 
         pc.isDead = false;
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Locked;
         gameOver.SetActive(false);
         pc.DestroyPlayer();
         pc.SpawnPlayer();

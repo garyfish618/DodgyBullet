@@ -19,13 +19,16 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();
+        pc = PersistenceController.Instance;
     }
 
     void Update()
     {
+        //If in main menu, do nothing
+        if(!pc.inGame) {
+            return;
+        }
+
         if(pc.isDead) {
             return;
         }

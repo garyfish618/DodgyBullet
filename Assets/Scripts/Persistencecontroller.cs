@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PersistenceController : MonoBehaviour
 {
     public static PersistenceController Instance { get; private set; } // Set instance from ONLY within this class
@@ -24,20 +25,30 @@ public class PersistenceController : MonoBehaviour
 
     
     [SerializeField]
-    private GameObject playerObj;
+    private GameObject playerObj = null;
 
     public GameObject player;
 
     public ArrayList bullets;
+    public ArrayList Enemies;
+
+    public bool soundAudible;
+    public bool inGame;
 
 
     private void Awake()
     {
         if (Instance == null)
         {
+            Instance = this;
+            soundAudible = true;
+            inGame = true;
             bullets = new ArrayList();
+            Enemies = new ArrayList();
             SpawnPlayer();
             isDead = false;
+            soundAudible = true;
+            //DontDestroyOnLoad(GameObject.Find("UIController"));
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
 
@@ -55,6 +66,7 @@ public class PersistenceController : MonoBehaviour
 
         //Spawn player
         player = Instantiate(playerObj, new Vector3(SpawnX, SpawnY, SpawnZ), Quaternion.Euler(0,0,0));
+        DontDestroyOnLoad(player);
 
     }
 
