@@ -16,6 +16,10 @@ public class BulletController : MonoBehaviour
     void Update()
     {
         rb.velocity = transform.forward * speed;
+
+        if(rb.velocity == Vector3.zero) {
+            Destroy(gameObject);
+        }
     }
 
     void OnCollisionEnter(Collision col) {
