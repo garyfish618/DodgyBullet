@@ -13,10 +13,30 @@ public class PersistenceController : MonoBehaviour
 
     public bool isDead;
 
+    [SerializeField]
+    private float SpawnX = 3.03f;
+
+    [SerializeField]
+    private float SpawnY = 1.0f;
+
+    [SerializeField]
+    private float SpawnZ = 3.36f;
+
+    
+    [SerializeField]
+    private GameObject playerObj;
+
+    public GameObject player;
+
+    public ArrayList bullets;
+
+
     private void Awake()
     {
         if (Instance == null)
         {
+            bullets = new ArrayList();
+            SpawnPlayer();
             isDead = false;
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
@@ -25,6 +45,21 @@ public class PersistenceController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+
+    public void SpawnPlayer() {
+        if(player != null) {
+            DestroyPlayer();
+        }
+
+        //Spawn player
+        player = Instantiate(playerObj, new Vector3(SpawnX, SpawnY, SpawnZ), Quaternion.Euler(0,0,0));
+
+    }
+
+    public void DestroyPlayer() {
+        Destroy(player);
     }
 
 }

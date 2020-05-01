@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     
-    [SerializeField]
     private GameObject player = null;
 
     public float rotationSpeed = 10f;
@@ -14,16 +13,25 @@ public class EnemyController : MonoBehaviour
     public Transform firePoint;
 
     private bool isShooting;
+
+    private PersistenceController pc;
     
     // Start is called before the first frame update
     void Start()
     {
+        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();
         isShooting = false;
+        player = pc.player;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //If player becomes null, try to reference pc's again
+        if(player == null) {
+            player = pc.player;
+        }
+
         RaycastHit hit;
         if(Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
@@ -48,7 +56,7 @@ public class EnemyController : MonoBehaviour
             yield break;
         }
         
-        Instantiate(bullet, firePoint.position, firePoint.rotation);
+        pc.bullets.Add(Instantiate(bullet, firePoint.position, firePoint.rotation));
 
         isShooting = true;
         yield return new WaitForSeconds(shootSpeed);

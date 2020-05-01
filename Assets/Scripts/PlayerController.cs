@@ -9,19 +9,19 @@ public class PlayerController : MonoBehaviour
     private Vector3 rotation = Vector3.zero;
     private Vector3 cameraRotation = Vector3.zero;
 
+
     [SerializeField]
     private float speed = 5.5f;
     
     [SerializeField]
     private float sensitivity = 3.5f;
-
-    [SerializeField]
     private PersistenceController pc;
 
     void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();
     }
 
     void Update()

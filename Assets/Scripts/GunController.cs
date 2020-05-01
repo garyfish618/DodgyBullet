@@ -12,8 +12,8 @@ public class GunController : MonoBehaviour
     private int ammoPerClip = 50;
     public Camera  playerCam;
     public ParticleSystem muzzleFlash;
-    public PersistenceController pc;
-    public UIController ui;
+    private PersistenceController pc;
+    private UIController ui;
 
     private Animator anim;
 
@@ -21,6 +21,8 @@ public class GunController : MonoBehaviour
     void Start()
     {
         anim = transform.GetComponent<Animator>();
+        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();
+        ui = GameObject.Find("UIController").GetComponent<UIController>();
 
     }
 

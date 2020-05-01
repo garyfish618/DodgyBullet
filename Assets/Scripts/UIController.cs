@@ -39,4 +39,18 @@ public class UIController : MonoBehaviour
 
 
     }
+
+    public void RespawnPlayer() {
+        //Destroy existing bullet objects
+        foreach(GameObject bullet in pc.bullets) {
+            Destroy(bullet);
+        }
+
+        pc.isDead = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        gameOver.SetActive(false);
+        pc.DestroyPlayer();
+        pc.SpawnPlayer();
+    }
 }
