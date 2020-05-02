@@ -52,7 +52,9 @@ public class UIController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         gameOver.SetActive(false);
-        pc.DestroyPlayer();
-        pc.SpawnPlayer();
+
+        
+        pc.RespawnPlayer();
+      
     }
 }

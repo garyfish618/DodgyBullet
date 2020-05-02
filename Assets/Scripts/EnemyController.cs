@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -15,11 +16,13 @@ public class EnemyController : MonoBehaviour
 
     private AudioSource enemyDeathSound;
 
+    private NavMeshAgent navMeshAgent;
     private bool isShooting;
 
     private PersistenceController pc;
 
     public Slider healthBar;
+    private bool snappedToPlayer;
     private bool isDead;
     public int health = 100;
     
@@ -31,30 +34,40 @@ public class EnemyController : MonoBehaviour
         isShooting = false;
         player = pc.player;
         healthBar.value = health;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.updatePosition = false;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Dont do anything if out of game
+        if(!pc.inGame) {
+            return;
+        }
+
         //If player becomes null, try to reference pc's again
         if(player == null) {
             player = pc.player;
         }
+
+        navMeshAgent.SetDestination(player.transform.position);
 
         RaycastHit hit;
         if(Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
             //Rotate enemy
             if(hit.transform == player.transform) {
+                Vector3 lookDirection = player.transform.position - transform.position;
+                lookDirection.y = 0;
+                transform.rotation = Quaternion.LookRotation(lookDirection);
+                navMeshAgent.updatePosition = true;
 
-               Vector3 lookDirection = player.transform.position - transform.position;
-               lookDirection.Normalize();
-               transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), rotationSpeed * Time.deltaTime);
 
                StartCoroutine("ShootLaser");
-            }          
-        }       
+            }
+        } 
     }
 
     IEnumerator ShootLaser()
@@ -90,9 +103,9 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator KillEnemy() {
         enemyDeathSound.Play();
-        GetComponent<Animator>().enabled = true;
-        GetComponent<Animator>().SetTrigger("Death");
-        yield return new WaitForSeconds(1);
+        Animator anim = gameObject.GetComponentInChildren(typeof(Animator)) as Animator;
+        anim.SetTrigger("Death");
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 

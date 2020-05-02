@@ -17,11 +17,15 @@ public class PlayerController : MonoBehaviour
     private float sensitivity = 3.5f;
 
     public float jumpForce = 7;
+    private float distToGround;
     private PersistenceController pc;
+
+    public bool godMode = false;
 
     void Start()
     {
         pc = PersistenceController.Instance;
+        distToGround = GetComponent<Collider>().bounds.extents.y;
     }
 
     void Update()
@@ -52,6 +56,14 @@ public class PlayerController : MonoBehaviour
         //Vertical Rotation
         float xRotation = Input.GetAxisRaw("Mouse Y");
         cameraRotation = new Vector3 (xRotation, 0, 0) * sensitivity;
+
+        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded()) {
+            rb.AddForce(0, 5, 0, ForceMode.Impulse);
+        }
+    }
+
+    private bool IsGrounded(){
+        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
 
     void FixedUpdate()
@@ -60,11 +72,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            rb.AddForce(0, 10, 0, ForceMode.Impulse);
-        }
-       
         if(velocity != Vector3.zero){
             //Stops rigidbody from moving if it collides
             rb.MovePosition(transform.position + velocity * Time.fixedDeltaTime);     

@@ -12,15 +12,27 @@ public class PersistenceController : MonoBehaviour
     public int ammoLeft;
     public int ammoInClip;
 
+    private int startingAmmo;
+    private int startingClip;
+
     public bool isDead;
     
     [SerializeField]
     private GameObject playerObj = null;
 
+    [SerializeField]
+    private GameObject enemyObj = null;
+
     public GameObject player;
 
     public ArrayList bullets;
-    public ArrayList Enemies;
+    
+    [HideInInspector]
+    public GameObject[] enemies;
+
+    public Transform[] spawnLocationsLevelOne;
+
+    public int currentLevel;
 
     public bool soundAudible;
     public bool inGame;
@@ -31,13 +43,15 @@ public class PersistenceController : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            startingClip = ammoInClip;
+            startingAmmo = ammoLeft;
             soundAudible = true;
             inGame = true;
             bullets = new ArrayList();
-            Enemies = new ArrayList();
             SpawnPlayer();
             isDead = false;
             soundAudible = true;
+            SpawnEnemies(currentLevel);
             //DontDestroyOnLoad(GameObject.Find("UIController"));
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
@@ -55,13 +69,56 @@ public class PersistenceController : MonoBehaviour
         }
 
         //Spawn player
-        player = Instantiate(playerObj, playerObj.transform.position, playerObj.transform.rotation);
+        player = (GameObject)Instantiate(playerObj, playerObj.transform.position, playerObj.transform.rotation);
         DontDestroyOnLoad(player);
+    }
 
+    public void ResetAmmo() {
+        ammoLeft = startingAmmo;
+        ammoInClip = startingClip;
     }
 
     public void DestroyPlayer() {
         Destroy(player);
+    }
+
+    public void RespawnPlayer() {
+        DestroyPlayer();
+        ResetAmmo();
+        GameObject.Find("UIController").GetComponent<UIController>().UpdateUI();
+        ResetEnemies();
+        SpawnPlayer();
+    }
+
+    public void ResetEnemies() {
+        foreach(GameObject enemy in enemies) {
+            Destroy(enemy);
+        }
+
+        SpawnEnemies(currentLevel);
+    }
+
+    public void SpawnEnemies(int level) {
+        Transform[] currentEnemies;
+        switch (level) {
+            
+            case 1:
+                currentEnemies = spawnLocationsLevelOne;
+                break;
+
+            default:
+                currentEnemies = null;
+                UnityEngine.Debug.LogError("Invalid level provided to SpawnEnemies");
+                break;
+        }
+
+        enemies = new GameObject[currentEnemies.Length];
+        
+        for(int i = 0; i < currentEnemies.Length; i++) {
+            enemies[i] = ((GameObject)Instantiate(enemyObj, currentEnemies[i].transform.position, currentEnemies[i].transform.rotation));
+            DontDestroyOnLoad(enemies[i]);
+        }
+
     }
 
 }
