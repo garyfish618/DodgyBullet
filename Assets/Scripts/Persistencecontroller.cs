@@ -13,16 +13,6 @@ public class PersistenceController : MonoBehaviour
     public int ammoInClip;
 
     public bool isDead;
-
-    [SerializeField]
-    private float SpawnX = 3.03f;
-
-    [SerializeField]
-    private float SpawnY = 1.0f;
-
-    [SerializeField]
-    private float SpawnZ = 3.36f;
-
     
     [SerializeField]
     private GameObject playerObj = null;
@@ -65,7 +55,7 @@ public class PersistenceController : MonoBehaviour
         }
 
         //Spawn player
-        player = Instantiate(playerObj, new Vector3(SpawnX, SpawnY, SpawnZ), Quaternion.Euler(0,0,0));
+        player = Instantiate(playerObj, playerObj.transform.position, playerObj.transform.rotation);
         DontDestroyOnLoad(player);
 
     }

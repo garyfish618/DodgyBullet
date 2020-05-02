@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField]
     private float sensitivity = 3.5f;
+
+    public float jumpForce = 7;
     private PersistenceController pc;
 
     void Start()
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
         if(pc.isDead) {
             return;
         }
+
          //Get movement vector
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
@@ -55,6 +58,11 @@ public class PlayerController : MonoBehaviour
     {
         if(pc.isDead) {
             return;
+        }
+
+        
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            rb.AddForce(0, 10, 0, ForceMode.Impulse);
         }
        
         if(velocity != Vector3.zero){

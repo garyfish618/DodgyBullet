@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             PersistenceController.Instance.inGame = false;
+            PersistenceController.Instance.player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
             SceneManager.LoadScene("MainMenu");
         }
     }

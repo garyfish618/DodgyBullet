@@ -17,6 +17,7 @@ public class MenuController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         if(PersistenceController.Instance != null) {
             PersistenceController.Instance.inGame = true;
+            PersistenceController.Instance.player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         }
         SceneManager.LoadScene("MainGame");
         

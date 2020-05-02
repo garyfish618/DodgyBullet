@@ -54,7 +54,6 @@ public class GunController : MonoBehaviour
             muzzleFlash.Play();
             RaycastHit hitInfo;
             if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, range)) {
-                UnityEngine.Debug.Log(hitInfo.collider.gameObject.tag);
                 if(hitInfo.collider.gameObject.tag == "Enemy") {
                     UnityEngine.Debug.Log("Hit");
                     hitInfo.collider.gameObject.GetComponent<EnemyController>().TakeDamage(damage);

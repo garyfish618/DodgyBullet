@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - Enemy
   - Scenery
+  - Elevator
   layers:
   - Default
   - TransparentFX
