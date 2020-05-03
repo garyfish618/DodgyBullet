@@ -22,7 +22,7 @@ public class PowerupController : MonoBehaviour
             }
 
             if(gameObject.tag == "Money") {
-                pc.removeMoney();
+                pc.RemoveMoney();
                 Destroy(gameObject);
             }
         }

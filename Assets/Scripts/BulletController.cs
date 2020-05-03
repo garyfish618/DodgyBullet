@@ -8,8 +8,11 @@ public class BulletController : MonoBehaviour
     public Rigidbody rb;
     private UIController ui = null;
 
+    private int bounces;
+
     void Start() {
         transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, 0);
+        bounces = 0;
     }
     // Update is called once per frame
     void Update()
@@ -42,7 +45,12 @@ public class BulletController : MonoBehaviour
         }
 
         else {
+            if(bounces == 3) {
+                Destroy(gameObject);
+            }
+
             transform.rotation = Quaternion.FromToRotation(Vector3.forward, Vector3.Reflect(transform.forward, col.GetContact(0).normal));
+            bounces++;
 
         }
     }

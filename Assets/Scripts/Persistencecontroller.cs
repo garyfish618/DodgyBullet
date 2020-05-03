@@ -121,6 +121,7 @@ public class PersistenceController : MonoBehaviour
 
     public void ResetPowerups() {
         foreach(GameObject money in money) {
+            moneyLeft--;
             Destroy(money);
         }
 
@@ -190,7 +191,8 @@ public class PersistenceController : MonoBehaviour
         }
     }
 
-    public void removeMoney() {
+    public void RemoveMoney() {
+        UnityEngine.Debug.Log(moneyLeft);
         moneyLeft -= 1;
 
         if(moneyLeft == 0) {

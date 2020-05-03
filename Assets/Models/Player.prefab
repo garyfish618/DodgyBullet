@@ -194,7 +194,7 @@ MonoBehaviour:
   speed: 5.5
   sensitivity: 3.5
   jumpForce: 7
-  godMode: 1
+  godMode: 0
   backgroundMusic: {fileID: -3045863866050113371}
 --- !u!82 &-3045863866050113371
 AudioSource:

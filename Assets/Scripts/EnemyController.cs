@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
@@ -60,7 +61,7 @@ public class EnemyController : MonoBehaviour
         if(Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
             //Rotate enemy
-            if(hit.transform == player.transform && pc.inGame) {
+            if(hit.transform == player.transform && SceneManager.GetActiveScene().name == "MainGame") {
                 Vector3 lookDirection = player.transform.position - transform.position;
                 lookDirection.y = 0;
                 transform.rotation = Quaternion.LookRotation(lookDirection);
