@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     public Text ammo;
+    public Text objectiveText;
     public GameObject gameOver;
     
     private PersistenceController pc;
@@ -28,7 +29,19 @@ public class UIController : MonoBehaviour
             ammo = GameObject.Find("Canvas/Ammo").GetComponent<Text>();
         }
 
+        if(objectiveText == null) {
+            objectiveText = GameObject.Find("Canvas/ObjectiveText").GetComponent<Text>();
+        }
+
         ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
+
+        if(pc.moneyLeft == 0) {
+            objectiveText.color = Color.green;
+        }
+
+        else {
+            objectiveText.color = Color.red;
+        }
     }
 
 

@@ -2704,7 +2704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 40
-  shootSpeed: 2.5
+  shootSpeed: 3.5
   bullet: {fileID: 4742027796178019571, guid: 3f66d68fe356da64d9cf6ca9e639c5e9, type: 3}
   firePoint: {fileID: 6988976914967168597}
   healthBar: {fileID: 6988976915248394120}
@@ -2832,7 +2832,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 4
+  m_StoppingDistance: 20
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1

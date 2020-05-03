@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     public bool godMode = false;
 
+    public AudioSource backgroundMusic;
+
     void Start()
     {
         pc = PersistenceController.Instance;
@@ -99,7 +101,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
- 
 
     }
 

@@ -10,11 +10,14 @@ public class BulletController : MonoBehaviour
 
     void Start() {
         transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, 0);
-        ui = GameObject.Find("UIController").GetComponent<UIController>();
     }
     // Update is called once per frame
     void Update()
     {
+        if(PersistenceController.Instance.inGame && ui == null) {
+            ui = GameObject.Find("UIController").GetComponent<UIController>();
+        }
+
         rb.velocity = transform.forward * speed;
 
         if(rb.velocity == Vector3.zero) {

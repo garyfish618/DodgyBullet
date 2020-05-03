@@ -14,6 +14,8 @@ public class EnemyController : MonoBehaviour
     public GameObject bullet;
     public Transform firePoint;
 
+    public bool freezeEnemy;
+
     private AudioSource enemyDeathSound;
 
     private NavMeshAgent navMeshAgent;
@@ -58,13 +60,14 @@ public class EnemyController : MonoBehaviour
         if(Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
             //Rotate enemy
-            if(hit.transform == player.transform) {
+            if(hit.transform == player.transform && pc.inGame) {
                 Vector3 lookDirection = player.transform.position - transform.position;
                 lookDirection.y = 0;
                 transform.rotation = Quaternion.LookRotation(lookDirection);
-                navMeshAgent.updatePosition = true;
-
-
+                
+                if(!freezeEnemy){
+                    navMeshAgent.updatePosition = true;
+                }            
                StartCoroutine("ShootLaser");
             }
         } 

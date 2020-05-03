@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - Scenery
   - Elevator
+  - Ammo
+  - Money
+  - FreezeEnemy
   layers:
   - Default
   - TransparentFX

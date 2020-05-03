@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
             PersistenceController.Instance.inGame = false;
             PersistenceController.Instance.player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
             SceneManager.LoadScene("MainMenu");
+            PersistenceController.Instance.player.GetComponent<PlayerController>().backgroundMusic.Pause();
         }
     }
 }

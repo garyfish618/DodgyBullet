@@ -18,6 +18,7 @@ public class MenuController : MonoBehaviour
         if(PersistenceController.Instance != null) {
             PersistenceController.Instance.inGame = true;
             PersistenceController.Instance.player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+            PersistenceController.Instance.player.GetComponent<PlayerController>().backgroundMusic.UnPause();
         }
         SceneManager.LoadScene("MainGame");
         
