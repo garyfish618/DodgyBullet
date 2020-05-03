@@ -4,22 +4,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
+    private PersistenceController pc;
     // Start is called before the first frame update
     void Start()
     {
-        
+        pc = PersistenceController.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("escape")) {
+        if(Input.GetKey("escape") && !pc.isDead) {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            PersistenceController.Instance.inGame = false;
-            PersistenceController.Instance.player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+            pc.inGame = false;
+            pc.player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
             SceneManager.LoadScene("MainMenu");
-            PersistenceController.Instance.player.GetComponent<PlayerController>().backgroundMusic.Pause();
+            pc.player.GetComponent<PlayerController>().backgroundMusic.Pause();
         }
     }
 }

@@ -83,7 +83,7 @@ public class EnemyController : MonoBehaviour
         isShooting = true;
         //Wait for rotation to stop
         yield return new WaitForSeconds(.5f );
-        pc.bullets.Add(Instantiate(bullet, firePoint.position, firePoint.rotation));
+        DontDestroyOnLoad(Instantiate(bullet, firePoint.position, firePoint.rotation));
         yield return new WaitForSeconds(shootSpeed - .5f);
         isShooting = false;
 

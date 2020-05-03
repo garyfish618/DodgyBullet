@@ -8,25 +8,33 @@ public class BulletController : MonoBehaviour
     public float speed = 30f;
     public Rigidbody rb;
     private UIController ui = null;
+    private PersistenceController pc;
 
     private int bounces;
 
     void Start() {
         transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, 0);
         bounces = 0;
+        pc = PersistenceController.Instance;
     }
     // Update is called once per frame
     void Update()
     {
-        if(PersistenceController.Instance.inGame && ui == null) {
-            ui = GameObject.Find("UIController").GetComponent<UIController>();
+
+
+        if(pc.inGame) {
+            rb.velocity = transform.forward * speed;
+
+            if(ui == null) {
+                ui = GameObject.Find("UIController").GetComponent<UIController>();
+            }
         }
 
-        rb.velocity = transform.forward * speed;
-
-        if(rb.velocity == Vector3.zero) {
-            Destroy(gameObject);
+        else {
+            rb.velocity = Vector3.zero;
         }
+
+
     }
 
     void OnCollisionEnter(Collision col) {
