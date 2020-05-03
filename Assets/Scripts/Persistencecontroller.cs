@@ -52,6 +52,8 @@ public class PersistenceController : MonoBehaviour
     private UIController ui;
     public int moneyLeft;
 
+    public int enemiesLeft;
+
     public bool soundAudible;
     public bool inGame;
 
@@ -71,7 +73,7 @@ public class PersistenceController : MonoBehaviour
             soundAudible = true;
             SpawnEnemies(currentLevel);
             SpawnPowerUps(currentLevel);
-            //DontDestroyOnLoad(GameObject.Find("UIController"));
+            ui = GameObject.Find("UIController").GetComponent<UIController>();
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
 
@@ -109,19 +111,22 @@ public class PersistenceController : MonoBehaviour
         ResetEnemies();
         ResetPowerups();
         SpawnPlayer();
+        ui.UpdateUI();
     }
 
     public void ResetEnemies() {
         foreach(GameObject enemy in enemies) {
             Destroy(enemy);
         }
+        enemiesLeft = 0;
 
         SpawnEnemies(currentLevel);
     }
 
     public void ResetPowerups() {
+        moneyLeft = 0;
+
         foreach(GameObject money in money) {
-            moneyLeft--;
             Destroy(money);
         }
 
@@ -154,6 +159,7 @@ public class PersistenceController : MonoBehaviour
             if(currentEnemies[i].tag == "FreezeEnemy") {
                 enemies[i].GetComponent<EnemyController>().freezeEnemy = true;
             }
+            enemiesLeft++;
             DontDestroyOnLoad(enemies[i]);
         }
 
@@ -197,9 +203,8 @@ public class PersistenceController : MonoBehaviour
 
         if(moneyLeft == 0) {
 
-            GameObject.Find("UIController").GetComponent<UIController>().UpdateUI();
+           ui.UpdateUI();
         }
 
     }
-
 }

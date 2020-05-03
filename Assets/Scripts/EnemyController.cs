@@ -55,8 +55,6 @@ public class EnemyController : MonoBehaviour
             player = pc.player;
         }
 
-        navMeshAgent.SetDestination(player.transform.position);
-
         RaycastHit hit;
         if(Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
@@ -67,6 +65,7 @@ public class EnemyController : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(lookDirection);
                 
                 if(!freezeEnemy){
+                    navMeshAgent.SetDestination(player.transform.position);
                     navMeshAgent.updatePosition = true;
                 }            
                StartCoroutine("ShootLaser");
@@ -81,11 +80,11 @@ public class EnemyController : MonoBehaviour
         {
             yield break;
         }
-        
-        pc.bullets.Add(Instantiate(bullet, firePoint.position, firePoint.rotation));
-
         isShooting = true;
-        yield return new WaitForSeconds(shootSpeed);
+        //Wait for rotation to stop
+        yield return new WaitForSeconds(.5f );
+        pc.bullets.Add(Instantiate(bullet, firePoint.position, firePoint.rotation));
+        yield return new WaitForSeconds(shootSpeed - .5f);
         isShooting = false;
 
 
@@ -110,6 +109,8 @@ public class EnemyController : MonoBehaviour
         Animator anim = gameObject.GetComponentInChildren(typeof(Animator)) as Animator;
         anim.SetTrigger("Death");
         yield return new WaitForSeconds(2);
+        pc.enemiesLeft--;
+        GameObject.Find("UIController").GetComponent<UIController>().UpdateUI();
         Destroy(gameObject);
     }
 

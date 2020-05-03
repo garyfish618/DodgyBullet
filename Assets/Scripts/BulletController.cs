@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
+    public int bouncesAllowed = 3;
     public float speed = 30f;
     public Rigidbody rb;
     private UIController ui = null;
@@ -32,6 +33,7 @@ public class BulletController : MonoBehaviour
 
         
         if(col.gameObject.tag == "Bullet") {
+            UnityEngine.Debug.Log("BulletCollide");
             Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
 
@@ -45,7 +47,7 @@ public class BulletController : MonoBehaviour
         }
 
         else {
-            if(bounces == 3) {
+            if(bounces == bouncesAllowed) {
                 Destroy(gameObject);
             }
 

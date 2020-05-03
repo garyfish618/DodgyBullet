@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1690104020431954374}
   - component: {fileID: 956962512659086128}
   - component: {fileID: 2838023870627015356}
+  - component: {fileID: 4735671020220478887}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -122,5 +123,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907966e9380351d43a5d3033f53b6ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bouncesAllowed: 5
   speed: 7.5
   rb: {fileID: 956962512659086128}
+--- !u!122 &4735671020220478887
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4742027796178019571}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4293388032
+  m_Size: 0.09

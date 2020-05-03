@@ -478,7 +478,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6703233875995733670, guid: e087cfc508f0cec41a451ccd0b8f256a, type: 3}
+  - {fileID: 2100000, guid: 2766057665b9a7f4ab57a558fd099e55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1627,7 +1627,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6703233875995733670, guid: e087cfc508f0cec41a451ccd0b8f256a, type: 3}
+  - {fileID: 2100000, guid: 2766057665b9a7f4ab57a558fd099e55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2707,6 +2707,7 @@ MonoBehaviour:
   shootSpeed: 3.5
   bullet: {fileID: 4742027796178019571, guid: 3f66d68fe356da64d9cf6ca9e639c5e9, type: 3}
   firePoint: {fileID: 6988976914967168597}
+  freezeEnemy: 0
   healthBar: {fileID: 6988976915248394120}
   health: 100
 --- !u!82 &3896525473741315423
@@ -2828,11 +2829,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 20
+  m_StoppingDistance: 10
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1

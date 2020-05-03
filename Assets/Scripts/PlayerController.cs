@@ -91,13 +91,13 @@ public class PlayerController : MonoBehaviour
             float angle = (cam.transform.rotation.eulerAngles.x > 180) ? cam.transform.rotation.eulerAngles.x - 360 : cam.transform.rotation.eulerAngles.x;
 
 
-            if(angle < -35) {
-                cam.transform.localEulerAngles = new Vector3 (-35, 0, 0);             
+            if(angle < -60) {
+                cam.transform.localEulerAngles = new Vector3 (-60, 0, 0);             
             }
 
             else {
-                if(angle > 35) {
-                    cam.transform.localEulerAngles = new Vector3(35, 0, 0);
+                if(angle > 60) {
+                    cam.transform.localEulerAngles = new Vector3(60, 0, 0);
                 }
             }
         }

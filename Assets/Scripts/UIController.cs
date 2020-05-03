@@ -6,6 +6,7 @@ public class UIController : MonoBehaviour
 {
     public Text ammo;
     public Text objectiveText;
+    public Text destroyEnemies;
     public GameObject gameOver;
     
     private PersistenceController pc;
@@ -33,6 +34,10 @@ public class UIController : MonoBehaviour
             objectiveText = GameObject.Find("Canvas/ObjectiveText").GetComponent<Text>();
         }
 
+         if(destroyEnemies == null) {
+            destroyEnemies = GameObject.Find("Canvas/DestroyEnemies").GetComponent<Text>();
+        }
+
         ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
 
         if(pc.moneyLeft == 0) {
@@ -41,6 +46,14 @@ public class UIController : MonoBehaviour
 
         else {
             objectiveText.color = Color.red;
+        }
+
+        if(pc.enemiesLeft == 0) {
+            destroyEnemies.color = Color.green;
+        }
+
+        else {
+            destroyEnemies.color = Color.red;
         }
     }
 
