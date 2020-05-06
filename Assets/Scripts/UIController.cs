@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
     public Text ammo;
     public Text objectiveText;
     public Text destroyEnemies;
+    public GameObject timeFreezeText;
     public GameObject gameOver;
     
     private PersistenceController pc;
@@ -34,8 +35,12 @@ public class UIController : MonoBehaviour
             objectiveText = GameObject.Find("Canvas/ObjectiveText").GetComponent<Text>();
         }
 
-         if(destroyEnemies == null) {
+        if(destroyEnemies == null) {
             destroyEnemies = GameObject.Find("Canvas/DestroyEnemies").GetComponent<Text>();
+        }
+
+        if(gameOver == null) {
+            gameOver = GameObject.Find("Canvas/GameOver").transform.GetChild(0).gameObject;
         }
 
         ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
@@ -50,16 +55,28 @@ public class UIController : MonoBehaviour
 
         if(pc.enemiesLeft == 0) {
             destroyEnemies.color = Color.green;
+            GameObject.Find("Level/HiddenDoor").GetComponent<Animator>().SetTrigger("OpenDoor");    
+
         }
 
         else {
             destroyEnemies.color = Color.red;
         }
+
+        TimeFreezeActive(pc.timeFrozen);
+    }
+
+    private void TimeFreezeActive(bool timeActive){
+        if(timeFreezeText == null){
+            timeFreezeText = GameObject.Find("Canvas/TimeFreeze").transform.GetChild(0).gameObject;
+        }
+        
+        timeFreezeText.SetActive(timeActive);
     }
 
 
     public void KillPlayer() {
-
+        UpdateUI();
         pc.isDead = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

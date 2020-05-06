@@ -5,26 +5,35 @@ using UnityEngine;
 public class PowerupController : MonoBehaviour
 {
     private PersistenceController pc;
+    private UIController ui;
+    public bool isTimeFreeze;
+
     
     [SerializeField]
     private int AmmoInBox = 0;
 
     void Start() {
+        ui = GameObject.Find("UIController").GetComponent<UIController>();
         pc = PersistenceController.Instance;
     }
 
     void OnCollisionEnter(Collision col) {
+        UnityEngine.Debug.Log("Cal");
         if(col.gameObject.tag == "Player") {
             if(gameObject.tag == "Ammo") {
                 pc.ammoLeft += AmmoInBox;
-                GameObject.Find("UIController").GetComponent<UIController>().UpdateUI();
-                Destroy(gameObject);
+                ui.UpdateUI();
             }
 
             if(gameObject.tag == "Money") {
                 pc.RemoveMoney();
-                Destroy(gameObject);
             }
+
+            if(isTimeFreeze) {
+                pc.timeFreezes++;
+                
+            }
+            Destroy(gameObject);
         }
     }
 }

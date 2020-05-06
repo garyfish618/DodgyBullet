@@ -11,6 +11,8 @@ TagManager:
   - Ammo
   - Money
   - FreezeEnemy
+  - Spawn
+  - Powerup
   layers:
   - Default
   - TransparentFX

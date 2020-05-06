@@ -47,6 +47,7 @@ public class PersistenceController : MonoBehaviour
     public Transform[] ammoLocationsLevelOne;
 
     public Transform[] moneyLocationsLevelOne;
+    public GameObject[] spawnPoints;
     public int currentLevel;
 
     private UIController ui;
@@ -55,7 +56,10 @@ public class PersistenceController : MonoBehaviour
     public int enemiesLeft;
 
     public bool soundAudible;
+    public bool timeFrozen;
     public bool inGame;
+
+    public int timeFreezes;
 
 
     private void Awake()
@@ -66,6 +70,7 @@ public class PersistenceController : MonoBehaviour
             startingClip = ammoInClip;
             startingAmmo = ammoLeft;
             soundAudible = true;
+            timeFrozen = false;
             inGame = true;
             bullets = new ArrayList();
             SpawnPlayer();
@@ -74,6 +79,17 @@ public class PersistenceController : MonoBehaviour
             SpawnEnemies(currentLevel);
             SpawnPowerUps(currentLevel);
             ui = GameObject.Find("UIController").GetComponent<UIController>();
+            timeFreezes = 0;
+
+            foreach(GameObject power in GameObject.FindGameObjectsWithTag("Powerup")) {
+                DontDestroyOnLoad(power);
+            }
+
+            //Dont destroy spawn points
+            foreach(GameObject spawn in spawnPoints) {
+                DontDestroyOnLoad(spawn);
+            }
+            DontDestroyOnLoad(ui.gameObject);
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
 
@@ -107,11 +123,20 @@ public class PersistenceController : MonoBehaviour
     public void RespawnPlayer() {
         DestroyPlayer();
         ResetAmmo();
+        ResetBullets();
         GameObject.Find("UIController").GetComponent<UIController>().UpdateUI();
         ResetEnemies();
         ResetPowerups();
         SpawnPlayer();
         ui.UpdateUI();
+        timeFreezes = 0;
+    }
+
+    public void ResetBullets() {
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+        for(int i = 0; i < bullets.Length; i++) {
+            Destroy(bullets[i]);
+        } 
     }
 
     public void ResetEnemies() {

@@ -76,7 +76,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator ShootLaser()
     {
 
-        if (isShooting)
+        if (isShooting || pc.timeFrozen)
         {
             yield break;
         }
