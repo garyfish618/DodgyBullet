@@ -9,8 +9,10 @@ public class UIController : MonoBehaviour
     public Text destroyEnemies;
     public GameObject timeFreezeText;
     public GameObject gameOver;
-    
+    public GameObject nextLevel;
     private PersistenceController pc;
+
+    public bool dontDestroy = false;
 
     // Start is called before the first frame update
     void Start()
@@ -20,30 +22,26 @@ public class UIController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void UpdateUI() {
-        if(ammo == null)
-        {
-            ammo = GameObject.Find("Canvas/Ammo").GetComponent<Text>();
+        pc = PersistenceController.Instance;
+       
+        if(pc.enemiesLeft == 0 && pc.moneyLeft == 0) {
+            destroyEnemies.color = Color.green;
+            objectiveText.color = Color.green;
+            //Level complete!
+            nextLevel.SetActive(true);
+            pc.isDead = true;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
-        if(objectiveText == null) {
-            objectiveText = GameObject.Find("Canvas/ObjectiveText").GetComponent<Text>();
+        if(pc.enemiesLeft == 0) {
+            destroyEnemies.color = Color.green;
         }
 
-        if(destroyEnemies == null) {
-            destroyEnemies = GameObject.Find("Canvas/DestroyEnemies").GetComponent<Text>();
+        else {
+            destroyEnemies.color = Color.red;
         }
-
-        if(gameOver == null) {
-            gameOver = GameObject.Find("Canvas/GameOver").transform.GetChild(0).gameObject;
-        }
-
-        ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
 
         if(pc.moneyLeft == 0) {
             objectiveText.color = Color.green;
@@ -52,28 +50,27 @@ public class UIController : MonoBehaviour
         else {
             objectiveText.color = Color.red;
         }
-
-        if(pc.enemiesLeft == 0) {
-            destroyEnemies.color = Color.green;
-            GameObject.Find("Level/HiddenDoor").GetComponent<Animator>().SetTrigger("OpenDoor");    
-
+        
+        if(pc.timeFrozen) {
+            timeFreezeText.SetActive(true);
         }
 
         else {
-            destroyEnemies.color = Color.red;
+            timeFreezeText.SetActive(false);
         }
 
-        TimeFreezeActive(pc.timeFrozen);
+        ammo.text = pc.ammoInClip.ToString() + "/" + pc.ammoLeft.ToString();
+
+        CheckDoorOpen();
     }
 
-    private void TimeFreezeActive(bool timeActive){
-        if(timeFreezeText == null){
-            timeFreezeText = GameObject.Find("Canvas/TimeFreeze").transform.GetChild(0).gameObject;
+    //Open big door for level 2
+    private void CheckDoorOpen() {
+        if(pc.currentLevel == 2 && pc.enemiesLeft <= 6 && pc.inGame) {
+              GameObject.Find("Level/HiddenDoor").GetComponent<Animator>().SetTrigger("OpenDoor");  
+
         }
-        
-        timeFreezeText.SetActive(timeActive);
     }
-
 
     public void KillPlayer() {
         UpdateUI();
@@ -85,12 +82,15 @@ public class UIController : MonoBehaviour
 
     }
 
-    public void RespawnPlayer() {
-        //Destroy existing bullet objects
-        foreach(GameObject bullet in pc.bullets) {
-            Destroy(bullet);
-        }
+    public void NextLevel() {
+        nextLevel.SetActive(false);
+        pc.isDead = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        pc.LoadNextLevel();
+    }
 
+    public void RespawnPlayer() {
         pc.isDead = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;

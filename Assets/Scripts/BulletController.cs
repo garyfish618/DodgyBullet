@@ -17,7 +17,7 @@ public class BulletController : MonoBehaviour
         StartCoroutine("WaitDamage");
         transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, 0);
         bounces = 0;
-        pc = PersistenceController.Instance;
+        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();;
         ui =  GameObject.Find("UIController").GetComponent<UIController>();
     }
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class BulletController : MonoBehaviour
             Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
 
-        if (col.gameObject.tag == "Player") {
+        if (col.gameObject.tag == "Player" && !pc.isDead) {
             if(col.gameObject.GetComponent<PlayerController>().godMode) {
                 return;
             }

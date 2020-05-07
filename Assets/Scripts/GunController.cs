@@ -25,7 +25,7 @@ public class GunController : MonoBehaviour
     void Start()
     {
         anim = transform.GetComponent<Animator>();
-        pc = PersistenceController.Instance;
+        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();;
         ui = GameObject.Find("UIController").GetComponent<UIController>();
         shootingSound = GetComponents<AudioSource>()[0];
         reloadSound = GetComponents<AudioSource>()[1];
@@ -44,7 +44,7 @@ public class GunController : MonoBehaviour
         }
 
         //Fire weapon
-        if(Input.GetMouseButton(0) && Time.time >= nextFire && !anim.GetCurrentAnimatorStateInfo(0).IsName("WeaponReload") && pc.ammoInClip != 0)
+        if(Input.GetMouseButton(0) && Time.time >= nextFire && !anim.GetCurrentAnimatorStateInfo(0).IsName("WeaponReload") && pc.ammoInClip != 0 && pc.inGame)
         {
             shootingSound.Play();
             nextFire = Time.time + 1f/fireRate;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class PersistenceController : MonoBehaviour
@@ -16,30 +17,14 @@ public class PersistenceController : MonoBehaviour
     private int startingClip;
 
     public bool isDead;
-    
-    [SerializeField]
-    private GameObject playerObj = null;
-
-    [SerializeField]
-    private GameObject enemyObj = null;
-
     public GameObject player;
 
     public ArrayList bullets;
     
-    [HideInInspector]
-    public GameObject[] enemies;
-
-    [HideInInspector]
-    public GameObject[] ammoBoxes;
-
-    [HideInInspector]
-    public GameObject[] money;
-
-    public Transform[] spawnLocationsLevelOne;
     public int currentLevel;
 
     private UIController ui;
+    public GameObject gameCanvas;
 
     private ArrayList powerUps;
     public int moneyLeft;
@@ -53,7 +38,9 @@ public class PersistenceController : MonoBehaviour
 
     public int timeFreezes;
 
-    public int moneyAtStart;
+    public bool initialLoadDone;
+
+    private bool levelFreshStart;
 
 
     private void Awake()
@@ -67,32 +54,14 @@ public class PersistenceController : MonoBehaviour
             timeFrozen = false;
             elevatorMoving = false;
             inGame = true;
-            bullets = new ArrayList();
-            SpawnPlayer();
+            bullets = new ArrayList();   
             isDead = false;
             soundAudible = true;
-            SpawnEnemies(currentLevel);
-            ui = GameObject.Find("UIController").GetComponent<UIController>();
             timeFreezes = 0;
-            moneyAtStart = 0;
-            moneyLeft = 0;
-            powerUps = new ArrayList();
-
-            //Dont destroy powerups
-            foreach(GameObject power in GameObject.FindGameObjectsWithTag("Powerup")) {
-                DontDestroyOnLoad(power);
-                powerUps.Add(power);
-                //Mark as an original
-                power.GetComponent<PowerupController>().dontDestroy = true;
-            }
-
-
-            //Dont destory spawnpoints
-            foreach(GameObject spawn in GameObject.FindGameObjectsWithTag("Spawn")) {
-                DontDestroyOnLoad(spawn);
-            }
-
-            DontDestroyOnLoad(ui.gameObject);
+            currentLevel = 0;
+            levelFreshStart = true;
+            powerUps = new ArrayList();          
+            
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
 
@@ -102,95 +71,257 @@ public class PersistenceController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if(Input.GetKey("escape") && !isDead && !elevatorMoving && inGame) {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            inGame = false;
 
-    public void SpawnPlayer() {
-        if(player != null) {
-            DestroyPlayer();
+            //Hide in game canvas
+            gameCanvas.SetActive(false);
+            player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+            SceneManager.LoadScene("MainMenu");
+            player.GetComponent<PlayerController>().backgroundMusic.Pause();
         }
 
-        //Spawn player
-        player = (GameObject)Instantiate(playerObj, playerObj.transform.position, playerObj.transform.rotation);
-        player.GetComponent<PlayerController>().backgroundMusic.Play();
+        //Use time freeze
+        if(Input.GetKeyDown("x") && inGame && !isDead) {
+            if(timeFreezes > 0) {
+                timeFreezes--;
+                
+                StartCoroutine("FreezeTime");
+            }
+        }
+    }
+
+    private IEnumerator FreezeTime() {
+        if(timeFrozen) {
+            yield break;
+        }
+        timeFrozen = true;
+        ui.UpdateUI();
+        yield return new WaitForSeconds(5);
+        timeFrozen = false;
+        ui.UpdateUI();
+    }
+
+
+    public void StartLevel() {
+        
+        if(currentLevel == 0) {
+            ui = GameObject.Find("UIController").GetComponent<UIController>();
+            ui.dontDestroy = true;
+            gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
+            gameCanvas.GetComponent<CanvasController>().dontDestroy = true;
+            DontDestroyOnLoad(ui.gameObject);
+            DontDestroyOnLoad(gameCanvas);
+            
+            currentLevel++;
+            levelFreshStart = false;
+        }
+
+        if(initialLoadDone) {
+            RemoveDuplicates();
+        }
+
+        inGame = true;
+        player = GameObject.FindGameObjectWithTag("Player");
+        PlayerController play = player.GetComponent<PlayerController>();
+        play.dontDestroy = true;
+
+ 
+        if(!play.backgroundMusic.isPlaying) {
+            play.backgroundMusic.Play();
+        }
+        
+        
         DontDestroyOnLoad(player);
+
+         //Dont destroy powerups
+        foreach(GameObject power in GameObject.FindGameObjectsWithTag("Powerup")) {
+            DontDestroyOnLoad(power);
+            powerUps.Add(power);
+            //Mark as an original
+            power.GetComponent<PowerupController>().dontDestroy = true;
+        }
+
+        //Dont destory enemies
+        foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
+            DontDestroyOnLoad(enemy);
+            enemy.GetComponent<EnemyController>().dontDestroy = true;
+        }
+        initialLoadDone = true;
     }
 
-    public void ResetAmmo() {
-        ammoLeft = startingAmmo;
-        ammoInClip = startingClip;
+    //This method removes duplicate canvas', enemies, players, and power-ups that unity attempts to create when re-loading a scene
+    public void RemoveDuplicates() {
+        GameObject[] canvases = GameObject.FindGameObjectsWithTag("GameCanvas");
+        GameObject[] uiControllers = GameObject.FindGameObjectsWithTag("uiController");
+
+        for(int i = 0; i < canvases.Length; i++) {
+            GameObject canv = canvases[i];
+            if(!canv.GetComponent<CanvasController>().dontDestroy) {
+                Destroy(canv);
+            }
+        }
+
+        for(int i = 0; i < uiControllers.Length; i++) {
+            GameObject uiCont = uiControllers[i];
+            if(!uiCont.GetComponent<UIController>().dontDestroy) {
+                Destroy(uiCont);
+            }
+        }
+
+        if(levelFreshStart) {
+            levelFreshStart = false;
+            return;
+        }
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] powerups = GameObject.FindGameObjectsWithTag("Powerup");
+        
+        for(int i = 0; i < players.Length; i++) {
+            GameObject player = players[i];
+            if(!player.GetComponent<PlayerController>().dontDestroy) {
+                Destroy(player);
+            }
+        }
+
+        for(int i = 0; i < enemies.Length; i++) {
+            GameObject enemy = enemies[i];
+            if(!enemy.GetComponent<EnemyController>().dontDestroy) {
+                Destroy(enemy);
+            }
+        }
+
+        for(int i = 0; i < powerups.Length; i++) {
+            GameObject power = powerups[i];
+            if(!power.GetComponent<PowerupController>().dontDestroy) {
+                Destroy(power);
+            }
+        }
+
+
+     
     }
 
-    public void DestroyPlayer() {
-        Destroy(player);
+    public void LoadCurrentLevel() {
+          switch(currentLevel) {
+            case 1:
+                SceneManager.LoadScene("LevelOne");
+                break;
+            
+            case 2:
+                SceneManager.LoadScene("LevelTwo");
+                break;
+
+            case 3:
+                SceneManager.LoadScene("LevelThree");
+                break;
+
+            default:
+                UnityEngine.Debug.LogError("Invalid level!");
+                break;
+        }
+    }
+
+    public void LoadNextLevel() {
+        CleanUp();
+        levelFreshStart = true;
+        currentLevel++;
+
+        switch(currentLevel) {
+
+            case 1:
+                SceneManager.LoadScene("LevelOne");
+                break;
+            
+            case 2:
+                SceneManager.LoadScene("LevelTwo");
+                break;
+
+            case 3:
+                SceneManager.LoadScene("LevelThree");
+                break;
+
+            default:
+                UnityEngine.Debug.LogError("Invalid level!");
+                break;
+        }
+    }
+
+    public void PlayButtonClicked() {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        inGame = true;
+        if(currentLevel == 0) {
+            SceneManager.LoadScene("LevelOne");   
+            return;     
+        }
+        player.GetComponent<PlayerController>().backgroundMusic.UnPause();
+        player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        LoadCurrentLevel();
+        gameCanvas.SetActive(true);
+    }
+
+    public void ShowHelp()
+    {
+        SceneManager.LoadScene("HowtoPlay");
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+
+        #else
+            Application.Quit();
+
+        #endif
     }
 
     public void RespawnPlayer() {
-        DestroyPlayer();
-        ResetAmmo();
-        ResetBullets();
-        GameObject.Find("UIController").GetComponent<UIController>().UpdateUI();
-        ResetEnemies();
-        ResetPowerups();
-        SpawnPlayer();
-        ui.UpdateUI();
-        timeFreezes = 0;
+        CleanUp();
+        ammoInClip = startingClip;
+        ammoLeft = startingAmmo;
+        levelFreshStart = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void ResetBullets() {
+    public void CleanUp() {
+        Destroy(player);
+        //Destroy all bullets
         GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
         for(int i = 0; i < bullets.Length; i++) {
             Destroy(bullets[i]);
         } 
-    }
 
-    public void ResetEnemies() {
-        foreach(GameObject enemy in enemies) {
-            Destroy(enemy);
+        //Destroy all enemies
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        for(int i = 0; i < enemies.Length; i++) {
+            Destroy(enemies[i]);
         }
+
+        //Destroy all powerups
+        GameObject[] powerUps = GameObject.FindGameObjectsWithTag("Powerup");
+        for(int i = 0; i < powerUps.Length; i++) {
+            Destroy(powerUps[i]);
+        }
+
+        moneyLeft = 0;
         enemiesLeft = 0;
-
-        SpawnEnemies(currentLevel);
     }
 
-    public void ResetPowerups() {
-        moneyLeft = moneyAtStart;
-        timeFreezes = 0;
-        timeFrozen = false;
-
-        foreach(GameObject power in powerUps) {
-            power.SetActive(true);
-        }
-    }
-
-    public void SpawnEnemies(int level) {
-        Transform[] currentEnemies;
-        switch (level) {
-            
-            case 1:
-                currentEnemies = spawnLocationsLevelOne;
-                break;
-
-            default:
-                currentEnemies = null;
-                UnityEngine.Debug.LogError("Invalid level provided to SpawnEnemies");
-                break;
-        }
-
-        enemies = new GameObject[currentEnemies.Length];
-        
-        for(int i = 0; i < currentEnemies.Length; i++) {
-            enemies[i] = ((GameObject)Instantiate(enemyObj, currentEnemies[i].transform.position, currentEnemies[i].transform.rotation));
-            
-            if(currentEnemies[i].tag == "FreezeEnemy") {
-                enemies[i].GetComponent<EnemyController>().freezeEnemy = true;
-            }
-            enemiesLeft++;
-            DontDestroyOnLoad(enemies[i]);
-        }
+    public void LoadCredits()
+    {
+        SceneManager.LoadScene("Credits");
     }
 
     public void RemoveMoney() {
         moneyLeft -= 1;
-
+        UnityEngine.Debug.Log("Money:" + moneyLeft);
         if(moneyLeft == 0) {
 
            ui.UpdateUI();

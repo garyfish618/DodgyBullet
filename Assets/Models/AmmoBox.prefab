@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2504852896850193850}
   m_Layer: 0
   m_Name: AmmoBox
-  m_TagString: Ammo
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -311,6 +311,7 @@ MonoBehaviour:
   isTimeFreeze: 0
   isAmmo: 1
   isMoney: 0
+  dontDestroy: 0
   AmmoInBox: 200
 --- !u!65 &2504852896850193850
 BoxCollider:
@@ -320,7 +321,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3177948199001193849}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}

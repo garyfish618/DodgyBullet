@@ -13,6 +13,8 @@ TagManager:
   - FreezeEnemy
   - Spawn
   - Powerup
+  - GameCanvas
+  - uiController
   layers:
   - Default
   - TransparentFX

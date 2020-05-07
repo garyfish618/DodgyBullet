@@ -22,11 +22,13 @@ public class PlayerController : MonoBehaviour
 
     public bool godMode = false;
 
+    public bool dontDestroy = false;
+
     public AudioSource backgroundMusic;
 
     void Start()
     {
-        pc = PersistenceController.Instance;
+        pc = GameObject.Find("PersistenceController").GetComponent<PersistenceController>();;
         distToGround = GetComponent<Collider>().bounds.extents.y;
     }
 

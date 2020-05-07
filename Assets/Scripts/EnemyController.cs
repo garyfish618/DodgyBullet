@@ -23,30 +23,35 @@ public class EnemyController : MonoBehaviour
     private bool isShooting;
 
     private PersistenceController pc;
+    private UIController ui;
 
     public Slider healthBar;
     private bool snappedToPlayer;
     private bool isDead;
     public int health = 100;
+
+    public bool dontDestroy = false;
     
     // Start is called before the first frame update
     void Start()
     {
         enemyDeathSound = GetComponent<AudioSource>();
         pc = PersistenceController.Instance;
+        ui = GameObject.Find("UIController").GetComponent<UIController>();
         isShooting = false;
         player = pc.player;
         healthBar.value = health;
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updatePosition = false;
-
+        pc.enemiesLeft++;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         //Dont do anything if out of game
-        if(!pc.inGame) {
+        if(!pc.inGame || pc.player == null) {
             return;
         }
 
@@ -59,7 +64,7 @@ public class EnemyController : MonoBehaviour
         if(!pc.elevatorMoving && Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
             //Rotate enemy
-            if(hit.transform == player.transform && SceneManager.GetActiveScene().name == "MainGame") {
+            if(hit.transform == player.transform && pc.inGame) {
                 Vector3 lookDirection = player.transform.position - transform.position;
                 lookDirection.y = 0;
                 transform.rotation = Quaternion.LookRotation(lookDirection);
@@ -91,7 +96,8 @@ public class EnemyController : MonoBehaviour
     }
 
     public void TakeDamage(int dmg) {
-        if(health - dmg <= 0) {
+
+        if(health - dmg <= 0 || player.GetComponent<PlayerController>().godMode) {
             if(isDead) {
                 return;
             }
