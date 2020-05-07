@@ -56,7 +56,7 @@ public class EnemyController : MonoBehaviour
         }
 
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
+        if(!pc.elevatorMoving && Physics.Raycast(transform.position, player.transform.position - transform.position, out hit)) {
             
             //Rotate enemy
             if(hit.transform == player.transform && SceneManager.GetActiveScene().name == "MainGame") {

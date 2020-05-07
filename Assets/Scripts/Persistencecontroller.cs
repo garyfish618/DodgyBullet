@@ -23,12 +23,6 @@ public class PersistenceController : MonoBehaviour
     [SerializeField]
     private GameObject enemyObj = null;
 
-    [SerializeField]
-    private GameObject moneyObj = null;
-
-    [SerializeField]
-    private GameObject ammoObj = null;
-
     public GameObject player;
 
     public ArrayList bullets;
@@ -43,14 +37,11 @@ public class PersistenceController : MonoBehaviour
     public GameObject[] money;
 
     public Transform[] spawnLocationsLevelOne;
-
-    public Transform[] ammoLocationsLevelOne;
-
-    public Transform[] moneyLocationsLevelOne;
-    public GameObject[] spawnPoints;
     public int currentLevel;
 
     private UIController ui;
+
+    private ArrayList powerUps;
     public int moneyLeft;
 
     public int enemiesLeft;
@@ -58,8 +49,11 @@ public class PersistenceController : MonoBehaviour
     public bool soundAudible;
     public bool timeFrozen;
     public bool inGame;
+    public bool elevatorMoving;
 
     public int timeFreezes;
+
+    public int moneyAtStart;
 
 
     private void Awake()
@@ -71,24 +65,33 @@ public class PersistenceController : MonoBehaviour
             startingAmmo = ammoLeft;
             soundAudible = true;
             timeFrozen = false;
+            elevatorMoving = false;
             inGame = true;
             bullets = new ArrayList();
             SpawnPlayer();
             isDead = false;
             soundAudible = true;
             SpawnEnemies(currentLevel);
-            SpawnPowerUps(currentLevel);
             ui = GameObject.Find("UIController").GetComponent<UIController>();
             timeFreezes = 0;
+            moneyAtStart = 0;
+            moneyLeft = 0;
+            powerUps = new ArrayList();
 
+            //Dont destroy powerups
             foreach(GameObject power in GameObject.FindGameObjectsWithTag("Powerup")) {
                 DontDestroyOnLoad(power);
+                powerUps.Add(power);
+                //Mark as an original
+                power.GetComponent<PowerupController>().dontDestroy = true;
             }
 
-            //Dont destroy spawn points
-            foreach(GameObject spawn in spawnPoints) {
+
+            //Dont destory spawnpoints
+            foreach(GameObject spawn in GameObject.FindGameObjectsWithTag("Spawn")) {
                 DontDestroyOnLoad(spawn);
             }
+
             DontDestroyOnLoad(ui.gameObject);
             DontDestroyOnLoad(gameObject); // gameObject = the game object this script lives on
         }
@@ -149,17 +152,13 @@ public class PersistenceController : MonoBehaviour
     }
 
     public void ResetPowerups() {
-        moneyLeft = 0;
+        moneyLeft = moneyAtStart;
+        timeFreezes = 0;
+        timeFrozen = false;
 
-        foreach(GameObject money in money) {
-            Destroy(money);
+        foreach(GameObject power in powerUps) {
+            power.SetActive(true);
         }
-
-        foreach(GameObject ammo in ammoBoxes) {
-            Destroy(ammo);
-        }
-
-        SpawnPowerUps(currentLevel);
     }
 
     public void SpawnEnemies(int level) {
@@ -187,43 +186,9 @@ public class PersistenceController : MonoBehaviour
             enemiesLeft++;
             DontDestroyOnLoad(enemies[i]);
         }
-
-    }
-
-    public void SpawnPowerUps(int level) {
-        Transform[] currentAmmoBoxes;
-        Transform[] currentMoney;
-        switch (level) {
-            
-            case 1:
-                currentAmmoBoxes = ammoLocationsLevelOne;
-                currentMoney = moneyLocationsLevelOne;
-                break;
-
-            default:
-                currentAmmoBoxes = null;
-                currentMoney = null;
-                UnityEngine.Debug.LogError("Invalid level provided to SpawnPowerups");
-                break;
-        }
-
-        ammoBoxes = new GameObject[currentAmmoBoxes.Length];
-        money = new GameObject[currentMoney.Length];
-        
-        for(int i = 0; i < currentAmmoBoxes.Length; i++) {
-            ammoBoxes[i] = ((GameObject)Instantiate(ammoObj, currentAmmoBoxes[i].transform.position, currentAmmoBoxes[i].transform.rotation));
-            DontDestroyOnLoad(ammoBoxes[i]);
-        }
-
-         for(int i = 0; i < currentMoney.Length; i++) {
-            moneyLeft++;
-            money[i] = ((GameObject)Instantiate(moneyObj, currentMoney[i].transform.position, currentMoney[i].transform.rotation));
-            DontDestroyOnLoad(money[i]);
-        }
     }
 
     public void RemoveMoney() {
-        UnityEngine.Debug.Log(moneyLeft);
         moneyLeft -= 1;
 
         if(moneyLeft == 0) {

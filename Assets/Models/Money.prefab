@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7039336174076441951}
   - component: {fileID: 7081328692650383637}
   - component: {fileID: 798910755092122089}
-  - component: {fileID: 1837177356276770969}
   - component: {fileID: 6025832382444217200}
+  - component: {fileID: 5647182294552012615}
   m_Layer: 0
   m_Name: Money
   m_TagString: Money
@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303197065296368247}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.61723, y: 2.809, z: -29.392}
-  m_LocalScale: {x: 0.20610408, y: 0.021904971, z: 0.07405785}
+  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.7071079}
+  m_LocalPosition: {x: 9.61723, y: 2.80964, z: -29.464901}
+  m_LocalScale: {x: 0.20610408, y: 0.071239345, z: 0.020559939}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
 --- !u!33 &7039336174076441951
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -296,20 +296,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &1837177356276770969
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303197065296368247}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
 --- !u!114 &6025832382444217200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,4 +308,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828c529293e72be44be5e2c03d201298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTimeFreeze: 0
+  isAmmo: 0
+  isMoney: 1
+  dontDestroy: 0
   AmmoInBox: 0
+--- !u!65 &5647182294552012615
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303197065296368247}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99999994, y: 1.0000002, z: 1.0000002}
+  m_Center: {x: 0.49999997, y: 0.5000001, z: -0.5000001}

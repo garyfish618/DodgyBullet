@@ -7,25 +7,39 @@ public class PowerupController : MonoBehaviour
     private PersistenceController pc;
     private UIController ui;
     public bool isTimeFreeze;
+    public bool isAmmo;
+    public bool isMoney;
+
+    //Marked as not destroyable
+    public bool dontDestroy = false;
 
     
     [SerializeField]
     private int AmmoInBox = 0;
 
     void Start() {
+        //If this was created after persistance initalization - Destroy (This is a duplicate)
+        if(!dontDestroy) {
+            Destroy(gameObject);
+        }
+
         ui = GameObject.Find("UIController").GetComponent<UIController>();
         pc = PersistenceController.Instance;
+
+        if(isMoney) {
+            pc.moneyLeft++;
+            pc.moneyAtStart++;
+        }
     }
 
     void OnCollisionEnter(Collision col) {
-        UnityEngine.Debug.Log("Cal");
         if(col.gameObject.tag == "Player") {
-            if(gameObject.tag == "Ammo") {
+            if(isAmmo) {
                 pc.ammoLeft += AmmoInBox;
                 ui.UpdateUI();
             }
 
-            if(gameObject.tag == "Money") {
+            if(isAmmo) {
                 pc.RemoveMoney();
             }
 
@@ -33,7 +47,11 @@ public class PowerupController : MonoBehaviour
                 pc.timeFreezes++;
                 
             }
-            Destroy(gameObject);
+
+            if(isMoney) {
+                pc.RemoveMoney();
+            }
+            gameObject.SetActive(false);
         }
     }
 }

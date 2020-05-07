@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class ElevatorController : MonoBehaviour
 {
-    private bool elevatorMoving = false;
+    private PersistenceController pc;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("StartElevator");
+        pc = PersistenceController.Instance;
 
     }
 
     private IEnumerator StartElevator() {
-        if(elevatorMoving) {
+        if(pc.elevatorMoving) {
             yield break;
         }
-        elevatorMoving = true;
+
+        pc.elevatorMoving = true;
         GetComponent<Animator>().SetTrigger("ElevatorUp");
         yield return new WaitForSeconds(2);
         GetComponent<Animator>().SetTrigger("ElevatorDown");
         yield return new WaitForSeconds(2);
-        elevatorMoving = false;
+        pc.elevatorMoving = false;
         
 
     }
@@ -38,6 +39,7 @@ public class ElevatorController : MonoBehaviour
 
     void OnCollisionExit(Collision col) {
         col.transform.SetParent(null);
+        DontDestroyOnLoad(col.gameObject);
     }
 
 }

@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("escape") && !pc.isDead) {
+        if(Input.GetKey("escape") && !pc.isDead && !pc.elevatorMoving) {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             pc.inGame = false;

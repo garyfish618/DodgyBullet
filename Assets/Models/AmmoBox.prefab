@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9083925538983008680}
   - component: {fileID: 24748006903585683}
   - component: {fileID: 1925306567323609593}
-  - component: {fileID: 8252084263428712618}
   - component: {fileID: 5809829429027389913}
   - component: {fileID: 2504852896850193850}
   m_Layer: 0
@@ -29,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3177948199001193849}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.996, y: 2.8045, z: -30.0415}
-  m_LocalScale: {x: 0.30128, y: 0.15022, z: 0.48566}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071057, w: 0.7071079}
+  m_LocalPosition: {x: 28.859, y: 2.9893, z: -29.996}
+  m_LocalScale: {x: 0.21942475, y: 0.57556796, z: 0.57761407}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.00001}
 --- !u!33 &9083925538983008680
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -297,20 +296,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &8252084263428712618
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3177948199001193849}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
 --- !u!114 &5809829429027389913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +308,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828c529293e72be44be5e2c03d201298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTimeFreeze: 0
+  isAmmo: 1
+  isMoney: 0
   AmmoInBox: 200
 --- !u!65 &2504852896850193850
 BoxCollider:
