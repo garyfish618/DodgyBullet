@@ -54,7 +54,6 @@ public class BulletController : MonoBehaviour
 
         
         if(col.gameObject.tag == "Bullet") {
-            UnityEngine.Debug.Log("BulletCollide");
             Physics.IgnoreCollision(col.collider, GetComponent<Collider>());
         }
 

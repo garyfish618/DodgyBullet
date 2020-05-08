@@ -192,9 +192,11 @@ MonoBehaviour:
   rb: {fileID: 1079876109416958446}
   cam: {fileID: 1079876109490791346}
   speed: 5.5
-  sensitivity: 3.5
+  verticalSensitivity: 3
+  horizontalSensitivity: 3
   jumpForce: 7
   godMode: 0
+  dontDestroy: 0
   backgroundMusic: {fileID: -3045863866050113371}
 --- !u!82 &-3045863866050113371
 AudioSource:

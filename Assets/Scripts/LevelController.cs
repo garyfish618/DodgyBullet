@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    PersistenceController pc;
+    private PersistenceController pc;
+    public int ammoAtStart;
     void Awake() {
         pc = PersistenceController.Instance;
+        pc.startingAmmo=ammoAtStart;
         pc.StartLevel();
+        
     }
 
     // Start is called before the first frame update

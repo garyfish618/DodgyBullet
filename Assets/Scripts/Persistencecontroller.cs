@@ -13,8 +13,7 @@ public class PersistenceController : MonoBehaviour
     public int ammoLeft;
     public int ammoInClip;
 
-    private int startingAmmo;
-    private int startingClip;
+    public int startingClip;
 
     public bool isDead;
     public GameObject player;
@@ -28,7 +27,7 @@ public class PersistenceController : MonoBehaviour
 
     private ArrayList powerUps;
     public int moneyLeft;
-
+    public int startingAmmo;
     public int enemiesLeft;
 
     public bool soundAudible;
@@ -45,11 +44,12 @@ public class PersistenceController : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = -1;
+
         if (Instance == null)
         {
             Instance = this;
-            startingClip = ammoInClip;
-            startingAmmo = ammoLeft;
             soundAudible = true;
             timeFrozen = false;
             elevatorMoving = false;
@@ -108,6 +108,7 @@ public class PersistenceController : MonoBehaviour
 
 
     public void StartLevel() {
+
         
         if(currentLevel == 0) {
             ui = GameObject.Find("UIController").GetComponent<UIController>();
@@ -123,6 +124,11 @@ public class PersistenceController : MonoBehaviour
 
         if(initialLoadDone) {
             RemoveDuplicates();
+        }
+
+        else {
+            ammoLeft = startingAmmo;
+            ammoInClip = startingClip;
         }
 
         inGame = true;
@@ -202,7 +208,6 @@ public class PersistenceController : MonoBehaviour
             }
         }
 
-
      
     }
 
@@ -221,14 +226,16 @@ public class PersistenceController : MonoBehaviour
                 break;
 
             default:
-                UnityEngine.Debug.LogError("Invalid level!");
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                SceneManager.LoadScene("Credits");
                 break;
         }
     }
 
     public void LoadNextLevel() {
         CleanUp();
-        levelFreshStart = true;
+        initialLoadDone = false;
         currentLevel++;
 
         switch(currentLevel) {
@@ -246,7 +253,9 @@ public class PersistenceController : MonoBehaviour
                 break;
 
             default:
-                UnityEngine.Debug.LogError("Invalid level!");
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                SceneManager.LoadScene("Credits");
                 break;
         }
     }
@@ -321,7 +330,6 @@ public class PersistenceController : MonoBehaviour
 
     public void RemoveMoney() {
         moneyLeft -= 1;
-        UnityEngine.Debug.Log("Money:" + moneyLeft);
         if(moneyLeft == 0) {
 
            ui.UpdateUI();

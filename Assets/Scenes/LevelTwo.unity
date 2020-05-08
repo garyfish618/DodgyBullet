@@ -545,7 +545,7 @@ GameObject:
   m_TagString: Scenery
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &172350825
 Transform:
@@ -1258,6 +1258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d7c2ee2ec067645b06f441b3ffe321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoAtStart: 450
 --- !u!4 &228216897
 Transform:
   m_ObjectHideFlags: 0
@@ -1292,7 +1293,7 @@ GameObject:
   m_TagString: Scenery
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 2
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &254867706
 Transform:
@@ -6639,7 +6640,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh58154
+  m_Name: pb_Mesh99390
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6965,7 +6966,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh57978
+  m_Name: pb_Mesh99214
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10888,7 +10889,7 @@ GameObject:
   m_TagString: Scenery
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1292809134
 Transform:
@@ -18368,7 +18369,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh57956
+  m_Name: pb_Mesh77856
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

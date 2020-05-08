@@ -28,7 +28,6 @@ public class PowerupController : MonoBehaviour
 
     void OnCollisionEnter(Collision col) {
         if(col.gameObject.tag == "Player") {
-            UnityEngine.Debug.Log(gameObject.tag);
             if(isAmmo) {
                 pc.ammoLeft += AmmoInBox;
                 ui.UpdateUI();

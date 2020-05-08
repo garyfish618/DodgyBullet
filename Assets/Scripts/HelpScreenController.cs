@@ -7,7 +7,6 @@ public class HelpScreenController : MonoBehaviour
 
     public void ShowMain()
     {
-        UnityEngine.Debug.Log("Here");
         SceneManager.LoadScene("MainMenu");
     }
 

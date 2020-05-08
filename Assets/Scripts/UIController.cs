@@ -23,6 +23,7 @@ public class UIController : MonoBehaviour
     }
 
     public void UpdateUI() {
+        UnityEngine.Debug.Log("Called");
         pc = PersistenceController.Instance;
        
         if(pc.enemiesLeft == 0 && pc.moneyLeft == 0) {
@@ -66,8 +67,10 @@ public class UIController : MonoBehaviour
 
     //Open big door for level 2
     private void CheckDoorOpen() {
+
         if(pc.currentLevel == 2 && pc.enemiesLeft <= 6 && pc.inGame) {
-              GameObject.Find("Level/HiddenDoor").GetComponent<Animator>().SetTrigger("OpenDoor");  
+            UnityEngine.Debug.Log("inside");
+            GameObject.Find("Level/HiddenDoor").GetComponent<Animator>().SetTrigger("OpenDoor");  
 
         }
     }

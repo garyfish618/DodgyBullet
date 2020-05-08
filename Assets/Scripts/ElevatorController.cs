@@ -33,6 +33,14 @@ public class ElevatorController : MonoBehaviour
         if (col.gameObject.tag == "Player") {
             col.transform.SetParent(transform);
             StartCoroutine("StartElevator");
+            
+
+            if(col.contacts.Length > 0) {
+                ContactPoint contact = col.contacts[0];
+                if(Vector3.Dot(contact.normal, Vector3.up) > 0.5) {
+                    Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), col.collider);
+                }
+            }
 
         }
     }
@@ -40,6 +48,11 @@ public class ElevatorController : MonoBehaviour
     void OnCollisionExit(Collision col) {
         col.transform.SetParent(null);
         DontDestroyOnLoad(col.gameObject);
+
+        if(col.gameObject.tag == "Player") {
+            Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), col.collider, false);
+
+        }
     }
 
 }

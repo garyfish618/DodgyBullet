@@ -832,19 +832,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f19622c0995ad84dbc3c9b796d18176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoLeft: 250
-  ammoInClip: 50
+  ammoLeft: 0
+  ammoInClip: 0
+  startingClip: 50
   isDead: 0
   player: {fileID: 0}
   currentLevel: 0
+  gameCanvas: {fileID: 0}
   moneyLeft: 0
+  startingAmmo: 0
   enemiesLeft: 0
   soundAudible: 1
   timeFrozen: 0
   inGame: 0
   elevatorMoving: 0
   timeFreezes: 0
-  moneyAtStart: 0
   initialLoadDone: 0
 --- !u!4 &1363655597
 Transform:
