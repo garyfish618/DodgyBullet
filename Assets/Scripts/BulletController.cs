@@ -58,6 +58,7 @@ public class BulletController : MonoBehaviour
         }
 
         if (col.gameObject.tag == "Player" && !pc.isDead) {
+            UnityEngine.Debug.Log(pc.isDead);
             if(col.gameObject.GetComponent<PlayerController>().godMode) {
                 return;
             }

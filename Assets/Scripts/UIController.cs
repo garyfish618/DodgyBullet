@@ -26,7 +26,7 @@ public class UIController : MonoBehaviour
         UnityEngine.Debug.Log("Called");
         pc = PersistenceController.Instance;
        
-        if(pc.enemiesLeft == 0 && pc.moneyLeft == 0) {
+        if(pc.enemiesLeft == 0 && pc.moneyLeft == 0 && !pc.isDead) {
             destroyEnemies.color = Color.green;
             objectiveText.color = Color.green;
             //Level complete!

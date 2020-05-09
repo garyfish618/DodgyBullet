@@ -15,12 +15,15 @@ EditorBuildSettings:
     path: Assets/Scenes/HowtoPlay.unity
     guid: 73cd13eb45782424ea8cf031ed4c58e5
   - enabled: 1
-    path: Assets/Scenes/LevelTwo.unity
+    path: Assets/Scenes/LevelThree.unity
     guid: 96fcb58d42bbf3b48914300100f5f988
   - enabled: 1
-    path: Assets/Scenes/LevelThree.unity
+    path: Assets/Scenes/LevelTwo.unity
     guid: c359349a17f597144b621a76b5afdb55
   - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: 8967ebfbe5701da40b74d3c89d883ca0
+  - enabled: 1
+    path: Assets/Scenes/PracticeLevel.unity
+    guid: 889ae37be163835489f105f16e36268f
   m_configObjects: {}

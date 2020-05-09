@@ -58,7 +58,7 @@ public class PersistenceController : MonoBehaviour
             isDead = false;
             soundAudible = true;
             timeFreezes = 0;
-            currentLevel = 0;
+            currentLevel = -2;
             levelFreshStart = true;
             powerUps = new ArrayList();          
             
@@ -110,7 +110,7 @@ public class PersistenceController : MonoBehaviour
     public void StartLevel() {
 
         
-        if(currentLevel == 0) {
+        if(currentLevel == -2) {
             ui = GameObject.Find("UIController").GetComponent<UIController>();
             ui.dontDestroy = true;
             gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
@@ -213,21 +213,30 @@ public class PersistenceController : MonoBehaviour
 
     public void LoadCurrentLevel() {
           switch(currentLevel) {
-            case 1:
+            case -1:
+                SceneManager.LoadScene("PracticeLevel");
+                break;
+
+            case 0:
+                gameCanvas.transform.GetChild(7).gameObject.SetActive(false);
                 SceneManager.LoadScene("LevelOne");
                 break;
             
-            case 2:
+            case 1:
                 SceneManager.LoadScene("LevelTwo");
                 break;
 
-            case 3:
+            case 2:
                 SceneManager.LoadScene("LevelThree");
                 break;
 
             default:
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+                CleanUp();
+                Destroy(gameObject);
+                Destroy(ui.gameObject);
+                Destroy(gameCanvas.gameObject);
                 SceneManager.LoadScene("Credits");
                 break;
         }
@@ -240,21 +249,30 @@ public class PersistenceController : MonoBehaviour
 
         switch(currentLevel) {
 
-            case 1:
+            case -1:
+                SceneManager.LoadScene("PracticeLevel");
+                break;
+
+            case 0:
+                gameCanvas.transform.GetChild(7).gameObject.SetActive(false);
                 SceneManager.LoadScene("LevelOne");
                 break;
             
-            case 2:
+            case 1:
                 SceneManager.LoadScene("LevelTwo");
                 break;
 
-            case 3:
+            case 2:
                 SceneManager.LoadScene("LevelThree");
                 break;
 
             default:
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+                CleanUp();
+                Destroy(gameObject);
+                Destroy(ui.gameObject);
+                Destroy(gameCanvas.gameObject);
                 SceneManager.LoadScene("Credits");
                 break;
         }
@@ -264,8 +282,8 @@ public class PersistenceController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         inGame = true;
-        if(currentLevel == 0) {
-            SceneManager.LoadScene("LevelOne");   
+        if(currentLevel == -2) {
+            SceneManager.LoadScene("PracticeLevel");   
             return;     
         }
         player.GetComponent<PlayerController>().backgroundMusic.UnPause();
@@ -278,6 +296,11 @@ public class PersistenceController : MonoBehaviour
     public void ShowHelp()
     {
         SceneManager.LoadScene("HowtoPlay");
+    }
+
+    public void OpenPracticeLevel()
+    {
+        SceneManager.LoadScene("PracticeLevel");
     }
 
     public void QuitGame()
